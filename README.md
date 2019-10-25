@@ -61,13 +61,28 @@ TypeService<YourEnum> typeService = new EnumTypeService<>(YourEnum.class);
 
 The built-in types are documented in the `BuiltInError` enum.
 
-Finally, the `localizationService` is responsible for creating a user-readable error message.
+Finally, the `localizationService` is responsible for creating a user-readable error message. Again, the `BuiltInError`
+can be used for possible values of the built in messages. An English localization engine for the error messages is
+provided in `BuiltInLocalizationService`.
 
 ## Writing validators
 
+If you wish to implement a custom validator, you may do so by implementing the `Validator` interface:
 
+```java
+public interface Validator<ERROR_TYPE> {
+    ERROR_TYPE getErrorKey();
+    String getDescription();
+    boolean isValid(@Nullable Object value);
+}
+```
 
-## Custom error key objects
+The `getErrorKey` function is supposed to return an error key object. If you are writing application-specific
+validators, feel free to use, for example, your applications-specific `enum` for this purpose. If you are writing a
+library, please consider using the `TypeService` for maximum flexibility.
 
-## Custom translations
+The `getDescription` should return a user-readable description of the validation error. It is strongly recommended
+that a `LocalizationService` implementation be used here for multilanguage support.
 
+Finally, the `isValid` method should return true if the passed value is valid. Special attention should be paid that the
+value may be a type you don't expect.

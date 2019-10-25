@@ -7,37 +7,20 @@ import java.util.regex.Pattern;
 
 public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TYPE> {
     private final static Pattern localPartPattern = Pattern.compile("\\A[a-zA-Z0-9\\-_+.\\x{007F}-\\x{FFFF}]+\\z", Pattern.UNICODE_CASE);
-    private final boolean allowEmpty;
     private final DomainNameValidator domainNameValidator;
     private final LocalizationService localizationService;
     private final TypeService<ERROR_TYPE> typeService;
 
-    public FormalEmailValidator(LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
+    public FormalEmailValidator(TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
         this.typeService = typeService;
         this.localizationService = localizationService;
-        this.domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(this.typeService, localizationService);
-        allowEmpty = false;
+        this.domainNameValidator = new FormalDomainNameValidator<>(this.typeService, localizationService);
     }
 
-    public FormalEmailValidator(DomainNameValidator domainNameValidator, LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
+    public FormalEmailValidator(DomainNameValidator domainNameValidator, TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
         this.domainNameValidator = domainNameValidator;
         this.typeService = typeService;
         this.localizationService = localizationService;
-        allowEmpty = false;
-    }
-
-    public FormalEmailValidator(boolean allowEmpty, LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
-        this.allowEmpty = allowEmpty;
-        this.typeService = typeService;
-        this.localizationService = localizationService;
-        domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(this.typeService, localizationService);
-    }
-
-    public FormalEmailValidator(boolean allowEmpty, DomainNameValidator domainNameValidator, LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
-        this.allowEmpty = allowEmpty;
-        this.domainNameValidator = domainNameValidator;
-        this.localizationService = localizationService;
-        this.typeService = typeService;
     }
 
     @Override
@@ -52,12 +35,12 @@ public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TY
 
     @Override
     public boolean isValid(@Nullable Object value) {
-        if (allowEmpty && (!(value instanceof String) || value.equals(""))) {
+        if (value == null) {
             return true;
         }
 
         if (!(value instanceof String)) {
-            return true;
+            return false;
         }
 
         if (((String)value).contains("\n")) {

@@ -1,0 +1,124 @@
+version: 2
+jobs:
+  build-branch:
+    docker:
+    - image: circleci/openjdk:8-jdk-browsers
+    steps:
+    - checkout
+    - run:
+        name: Set Maven version
+        command: mvn versions:set -DnewVersion=${CIRCLE_BRANCH}-SNAPSHOT
+    - restore_cache:
+        key: validators
+    - run:
+        name: Copy Maven settings.xml
+        command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+    - run:
+        name: Build
+        command: mvn clean package
+    - save_cache:
+        paths:
+        - ~/.m2
+        key: validators
+  build-tag:
+    docker:
+    - image: circleci/openjdk:8-jdk-browsers
+    steps:
+    - checkout
+    - run: mvn versions:set -DnewVersion=${CIRCLE_TAG}
+    - restore_cache:
+        key: validators
+    - run:
+        name: Copy Maven settings.xml
+        command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+    - run:
+        name: Build
+        command: mvn clean package
+    - save_cache:
+        paths:
+        - ~/.m2
+        key: validators
+  build-and-deploy-branch:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - checkout
+      - run:
+          name: Set Maven version
+          command: mvn versions:set -DnewVersion=${CIRCLE_BRANCH}-SNAPSHOT
+      - run:
+          name: Flatten Maven structure
+          command: mvn flatten:flatten
+      - restore_cache:
+          key: validators
+      - run:
+          name: Copy Maven settings.xml
+          command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+      - run:
+          name: Build
+          command: mvn clean package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: validators
+      - run:
+          name: Publish to Maven Central
+          command: ./.circleci/publish.sh
+  build-and-deploy-tag:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - checkout
+      - run:
+          name: Set Maven version
+          command: mvn versions:set -DnewVersion=${CIRCLE_TAG}
+      - run:
+          name: Flatten Maven structure
+          command: mvn flatten:flatten
+      - restore_cache:
+          key: validators
+      - run:
+          name: Copy Maven settings.xml
+          command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+      - run:
+          name: Build
+          command: mvn clean package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: validators
+      - run:
+          name: Publish to Maven Central
+          command: ./.circleci/publish.sh
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build-branch:
+          context: refactor-zone-libraries
+          filters:
+            branches:
+              ignore: /[0-9]+\.[0-9]+/
+            tags:
+              ignore: /.*/
+      - build-tag:
+          context: refactor-zone-libraries
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              ignore: /[0-9]+\.[0-9]+/
+      - build-and-deploy-branch:
+          context: refactor-zone-libraries
+          filters:
+            branches:
+              only: /[0-9]+\.[0-9]+/
+            tags:
+              ignore: /.*/
+      - build-and-deploy-tag:
+          context: refactor-zone-libraries
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+\.[0-9]+\.[0-9]+(|-(alpha|beta|PR)[0-9]+)/

@@ -11,7 +11,7 @@ public class FormalDomainNameValidator<ERROR_TYPE> implements DomainNameValidato
     private final TypeService<ERROR_TYPE> typeService;
     private static Pattern domainPattern;
 
-    public FormalDomainNameValidator(LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
+    public FormalDomainNameValidator(TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
         this.localizationService = localizationService;
         this.typeService = typeService;
     }
@@ -38,6 +38,10 @@ public class FormalDomainNameValidator<ERROR_TYPE> implements DomainNameValidato
 
     @Override
     public boolean isValid(@Nullable Object value) {
+        if (value == null) {
+            return true;
+        }
+
         if (!(value instanceof String)) {
             return false;
         }

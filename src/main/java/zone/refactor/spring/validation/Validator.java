@@ -17,7 +17,8 @@ public interface Validator<ERROR_TYPE> {
 
     /**
      * @param value the value to be checked
-     * @return true if the value is valid, false otherwise.
+     * @return true if the value is valid, false otherwise. Note that `null` should be considered valid, unless the
+     *         validator specifically tests if a field is filled out.
      */
     boolean isValid(@Nullable Object value);
 }

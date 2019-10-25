@@ -15,7 +15,7 @@ public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TY
     public FormalEmailValidator(LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
         this.typeService = typeService;
         this.localizationService = localizationService;
-        this.domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(localizationService, this.typeService);
+        this.domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(this.typeService, localizationService);
         allowEmpty = false;
     }
 
@@ -30,7 +30,7 @@ public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TY
         this.allowEmpty = allowEmpty;
         this.typeService = typeService;
         this.localizationService = localizationService;
-        domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(localizationService, this.typeService);
+        domainNameValidator = new FormalDomainNameValidator<ERROR_TYPE>(this.typeService, localizationService);
     }
 
     public FormalEmailValidator(boolean allowEmpty, DomainNameValidator domainNameValidator, LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {

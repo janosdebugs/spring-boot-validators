@@ -28,12 +28,12 @@ public class FormalDomainNameValidator<ERROR_TYPE> implements DomainNameValidato
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("domain-name-formal");
+        return typeService.getErrorKey(BuiltInError.DOMAIN_NAME_FORMAL.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-valid-domain");
+        return localizationService.localize(BuiltInError.DOMAIN_NAME_FORMAL.getLocalizationKey());
     }
 
     @Override

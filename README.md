@@ -28,7 +28,44 @@ This package can be installed from Maven Central:
 
 There are many ways to use this package. The easiest way to use it is to build a validator chain, for example:
 
+```java
+ValidatorChain<String> validatorChain = new ValidatorChain<>(
+    exceptionFactory
+);
+
+validatorChain.addValidator(new RequiredValidator<String>(
+    "my-required-field",
+    typeService,
+    localizationService
+));
+
+Map<String, String> data = new HashMap<>();
+data.put("my-required-field", "my-value");
+
+//Throws exception if validation fails.
+validatorChain.validate(data);
+```
+
+Now, there are three dependencies, `exceptionFactory`, `typeService` and `localizationService`.
+
+`exceptionFactory` is a variable of the type `ExceptionFactory`, which is responsible
+for creating a validation factory is the validation fails. This is done such that the actual exception type is flexible.
+
+`typeService` is a service that creates an error type. A default implementation called `StringTypeService` is provided
+which simply returns the error key string. However, you may want to create an `enum` for all possible errors, which 
+you can do using the `EnumTypeService` like this:
+
+```java
+TypeService<YourEnum> typeService = new EnumTypeService<>(YourEnum.class);
+```
+
+The built-in types are documented in the `BuiltInError` enum.
+
+Finally, the `localizationService` is responsible for creating a user-readable error message.
+
 ## Writing validators
+
+
 
 ## Custom error key objects
 

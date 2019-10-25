@@ -16,11 +16,11 @@ public class HttpUrlValidator<ERROR_TYPE> extends PatternValidator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("http-url");
+        return typeService.getErrorKey(BuiltInError.HTTP_URL.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-valid-http-url");
+        return localizationService.localize(BuiltInError.HTTP_URL.getLocalizationKey());
     }
 }

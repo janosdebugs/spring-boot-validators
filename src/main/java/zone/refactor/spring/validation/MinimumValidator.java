@@ -37,11 +37,11 @@ public class MinimumValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("minimum");
+        return typeService.getErrorKey(BuiltInError.MINIMUM.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-number-larger-or-equal", minimum);
+        return localizationService.localize(BuiltInError.MINIMUM.getLocalizationKey(), minimum);
     }
 }

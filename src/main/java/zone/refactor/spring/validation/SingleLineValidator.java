@@ -13,12 +13,12 @@ public class SingleLineValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("single-line");
+        return typeService.getErrorKey(BuiltInError.SINGLE_LINE.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-single-line");
+        return localizationService.localize(BuiltInError.SINGLE_LINE.getLocalizationKey());
     }
 
     @Override

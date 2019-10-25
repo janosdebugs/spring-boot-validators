@@ -19,12 +19,12 @@ public class PatternValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("pattern");
+        return typeService.getErrorKey(BuiltInError.PATTERN.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-according-to-pattern", pattern.toString());
+        return localizationService.localize(BuiltInError.PATTERN.getLocalizationKey(), pattern.toString());
     }
 
     @Override

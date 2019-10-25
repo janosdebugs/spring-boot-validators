@@ -13,12 +13,12 @@ public class RequiredValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("required");
+        return typeService.getErrorKey(BuiltInError.REQUIRED.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-fill-in-field");
+        return localizationService.localize(BuiltInError.REQUIRED.getLocalizationKey());
     }
 
     @Override

@@ -26,11 +26,11 @@ public class MaximumLengthValidator<ERROR_TYPE> implements Validator<ERROR_TYPE>
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("maximum-length");
+        return typeService.getErrorKey(BuiltInError.MAXIMUM_LENGTH.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-at-most-x-characters", maximumLength);
+        return localizationService.localize(BuiltInError.MAXIMUM_LENGTH.getLocalizationKey(), maximumLength);
     }
 }

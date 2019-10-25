@@ -42,12 +42,12 @@ public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TY
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("invalid-email");
+        return typeService.getErrorKey(BuiltInError.EMAIL.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-valid-email");
+        return localizationService.localize(BuiltInError.EMAIL.getLocalizationKey());
     }
 
     @Override

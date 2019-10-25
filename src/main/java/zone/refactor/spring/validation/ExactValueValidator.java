@@ -16,12 +16,12 @@ public class ExactValueValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("exact-value");
+        return typeService.getErrorKey(BuiltInError.EXACT_VALUE.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-x-here", expected);
+        return localizationService.localize(BuiltInError.EXACT_VALUE.getLocalizationKey(), expected);
     }
 
     @Override

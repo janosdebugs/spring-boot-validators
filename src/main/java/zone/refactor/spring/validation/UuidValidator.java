@@ -19,11 +19,11 @@ public class UuidValidator<ERROR_TYPE> extends PatternValidator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("uuid");
+        return typeService.getErrorKey(BuiltInError.UUID.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-valid-uuid");
+        return localizationService.localize(BuiltInError.UUID.getLocalizationKey());
     }
 }

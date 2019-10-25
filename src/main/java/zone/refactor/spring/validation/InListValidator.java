@@ -18,12 +18,12 @@ public class InListValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("in-list");
+        return typeService.getErrorKey(BuiltInError.IN_LIST.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-one-of", expected);
+        return localizationService.localize(BuiltInError.IN_LIST.getLocalizationKey(), expected);
     }
 
     @Override

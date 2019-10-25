@@ -27,11 +27,11 @@ public class MinimumLengthValidator<ERROR_TYPE> implements Validator<ERROR_TYPE>
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("minimum-length");
+        return typeService.getErrorKey(BuiltInError.MINIMUM_LENGTH.toString());
     }
 
     @Override
     public String getDescription() {
-        return "Please enter at least " + minimumLength + " characters.";
+        return localizationService.localize(BuiltInError.MINIMUM_LENGTH.getLocalizationKey(), minimumLength);
     }
 }

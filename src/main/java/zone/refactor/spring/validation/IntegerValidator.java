@@ -13,12 +13,12 @@ public class IntegerValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("integer");
+        return typeService.getErrorKey(BuiltInError.INTEGER.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-a-number");
+        return localizationService.localize(BuiltInError.INTEGER.getLocalizationKey());
     }
 
     @Override

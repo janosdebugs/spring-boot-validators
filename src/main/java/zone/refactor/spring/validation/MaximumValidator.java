@@ -37,11 +37,11 @@ public class MaximumValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public ERROR_TYPE getErrorKey() {
-        return typeService.getErrorKey("maximum");
+        return typeService.getErrorKey(BuiltInError.MAXIMUM.toString());
     }
 
     @Override
     public String getDescription() {
-        return localizationService.localize("please-enter-number-lower-or-equal", maximum);
+        return localizationService.localize(BuiltInError.MAXIMUM.getLocalizationKey(), maximum);
     }
 }

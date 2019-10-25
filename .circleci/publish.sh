@@ -20,5 +20,5 @@ echo -n "${GPG_PASSPHRASE}" | gpg --passphrase-fd 0 --batch --import private.asc
 rm public.asc
 rm private.asc
 
-mvn -pl $(cat pom.xml |grep '<module>' | sed -e 's/.*<module>//' -e 's/<\/module>//' | xargs -i echo -n "{}," | sed -e 's/,$//') deploy
+mvn deploy
 rm -rf .gnupg

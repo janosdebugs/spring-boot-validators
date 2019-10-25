@@ -1,7 +1,5 @@
 package zone.refactor.spring.validation;
 
-import jdk.internal.joptsimple.internal.Strings;
-
 import java.util.List;
 
 public class BuiltInLocalizationService implements LocalizationService {
@@ -33,7 +31,8 @@ public class BuiltInLocalizationService implements LocalizationService {
                 return "Please enter a valid e-mail address.";
             case IN_LIST:
                 //noinspection unchecked
-                return "Please enter one of the following: " + Strings.join((List<String>)parameters[0], ", ");
+                return "Please enter one of the following: " +
+                    String.join(", ", ((List<String>)parameters[0]).toArray(new String[0]));
             case INTEGER:
                 return "Please enter whole number.";
             case MAXIMUM:

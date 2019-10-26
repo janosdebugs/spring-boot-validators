@@ -46,6 +46,10 @@ public class FormalDomainNameValidator<ERROR_TYPE> implements DomainNameValidato
             return false;
         }
 
+        if (((String) value).isEmpty()) {
+            return true;
+        }
+
         if (((String)value).contains("\n")) {
             return false;
         }

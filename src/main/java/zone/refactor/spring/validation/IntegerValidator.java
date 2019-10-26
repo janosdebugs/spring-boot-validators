@@ -23,7 +23,12 @@ public class IntegerValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public boolean isValid(@Nullable Object value) {
-        if (value instanceof String) {
+        if (value == null) {
+            return true;
+        } else if (value instanceof String) {
+            if (((String) value).isEmpty()) {
+                return true;
+            }
             try {
                 Integer.parseInt((String)value);
                 return true;

@@ -26,6 +26,6 @@ public class ExactValueValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public boolean isValid(@Nullable Object value) {
-        return value == null || value.equals(expected);
+        return value == null || (value instanceof String && ((String) value).isEmpty()) || value.equals(expected);
     }
 }

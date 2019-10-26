@@ -29,6 +29,6 @@ public class InListValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
     @Override
     public boolean isValid(@Nullable Object value) {
         //noinspection SuspiciousMethodCalls
-        return expected.contains(value);
+        return value == null || (value instanceof String && ((String) value).isEmpty()) || expected.contains(value);
     }
 }

@@ -14,7 +14,7 @@ public class FormalDomainNameValidatorTest {
         );
 
         assertTrue(validator.isValid(null));
-        assertFalse(validator.isValid(""));
+        assertTrue(validator.isValid(""));
         assertTrue(validator.isValid("localhost"));
         assertFalse(validator.isValid("localhost."));
         assertFalse(validator.isValid("localhost.."));

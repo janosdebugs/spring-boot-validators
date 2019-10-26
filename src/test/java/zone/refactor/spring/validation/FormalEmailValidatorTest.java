@@ -14,6 +14,7 @@ public class FormalEmailValidatorTest {
         );
 
         assertTrue(validator.isValid(null));
+        assertTrue(validator.isValid(""));
         assertFalse(validator.isValid(1));
         assertFalse(validator.isValid("hello@world.com\n"));
         assertFalse(validator.isValid("hello-at-world.com"));

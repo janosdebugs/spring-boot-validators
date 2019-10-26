@@ -43,6 +43,10 @@ public class FormalEmailValidator<ERROR_TYPE> implements EmailValidator<ERROR_TY
             return false;
         }
 
+        if (((String) value).isEmpty()) {
+            return true;
+        }
+
         if (((String)value).contains("\n")) {
             return false;
         }

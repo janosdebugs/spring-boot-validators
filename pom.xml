@@ -12,6 +12,19 @@
     <description>This library does a full form validation for Spring Boot</description>
     <url>https://refactor.zone</url>
 
+    <developers>
+        <developer>
+            <id>janoszen</id>
+            <name>Janos Pasztor</name>
+            <url>https://pasztor.at</url>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/refactorzone/spring-boot-validators/issues</url>
+    </issueManagement>
+
     <licenses>
         <license>
             <name>The MIT License</name>

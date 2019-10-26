@@ -107,7 +107,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              ignore: /[0-9]+\.[0-9]+/
+              ignore: /[0-9]+\.[0-9]+(|\.[0-9]+)(|-(alpha|beta|PR)[0-9]+)/
       - build-and-deploy-branch:
           context: refactor-zone-libraries
           filters:
@@ -121,4 +121,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /[0-9]+\.[0-9]+\.[0-9]+(|-(alpha|beta|PR)[0-9]+)/
+              only: /[0-9]+\.[0-9]+(|\.[0-9]+)(|-(alpha|beta|PR)[0-9]+)/

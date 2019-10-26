@@ -29,7 +29,7 @@ public class SingleLineValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
         if (value instanceof String) {
             return !((String)value).contains("\n");
         } else {
-            return false;
+            return !value.toString().contains("\n");
         }
     }
 }

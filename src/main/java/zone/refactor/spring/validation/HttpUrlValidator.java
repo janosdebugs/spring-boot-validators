@@ -9,7 +9,7 @@ public class HttpUrlValidator<ERROR_TYPE> extends PatternValidator<ERROR_TYPE> {
     private final TypeService<ERROR_TYPE> typeService;
 
     public HttpUrlValidator(TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
-        super(pattern, localizationService, typeService);
+        super(pattern, typeService, localizationService);
         this.localizationService = localizationService;
         this.typeService = typeService;
     }

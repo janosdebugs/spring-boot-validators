@@ -7,8 +7,8 @@ public class MaximumLengthValidator<ERROR_TYPE> implements Validator<ERROR_TYPE>
     private final TypeService<ERROR_TYPE> typeService;
     private final LocalizationService localizationService;
 
-    public MaximumLengthValidator(int minimumLength, TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
-        this.maximumLength = minimumLength;
+    public MaximumLengthValidator(int maximumLength, TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
+        this.maximumLength = maximumLength;
         this.typeService = typeService;
         this.localizationService = localizationService;
     }
@@ -20,7 +20,7 @@ public class MaximumLengthValidator<ERROR_TYPE> implements Validator<ERROR_TYPE>
         } else if (value instanceof String) {
             return ((String)value).length() <= maximumLength;
         } else {
-            return false;
+            return value.toString().length() <= maximumLength;
         }
     }
 

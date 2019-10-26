@@ -19,9 +19,9 @@ public class MinimumLengthValidator<ERROR_TYPE> implements Validator<ERROR_TYPE>
             return true;
         }
         if (value instanceof String) {
-            return ((String)value).length() >= minimumLength;
+            return ((String) value).isEmpty() || ((String)value).length() >= minimumLength;
         } else {
-            return false;
+            return value.toString().isEmpty() || value.toString().length() >= minimumLength;
         }
     }
 

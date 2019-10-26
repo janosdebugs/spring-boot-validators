@@ -11,8 +11,8 @@ public class UuidValidator<ERROR_TYPE> extends PatternValidator<ERROR_TYPE> {
     private final LocalizationService localizationService;
     private final TypeService<ERROR_TYPE> typeService;
 
-    public UuidValidator(LocalizationService localizationService, TypeService<ERROR_TYPE> typeService) {
-        super(pattern, localizationService, typeService);
+    public UuidValidator(TypeService<ERROR_TYPE> typeService, LocalizationService localizationService) {
+        super(pattern, typeService, localizationService);
         this.localizationService = localizationService;
         this.typeService = typeService;
     }

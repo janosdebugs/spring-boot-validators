@@ -23,6 +23,12 @@ public class RequiredValidator<ERROR_TYPE> implements Validator<ERROR_TYPE> {
 
     @Override
     public boolean isValid(@Nullable Object value) {
-        return (value != null);
+        if (value == null) {
+            return false;
+        }
+        if (value instanceof String && ((String) value).isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

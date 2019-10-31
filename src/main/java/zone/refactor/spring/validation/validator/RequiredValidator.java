@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 public class RequiredValidator implements Validator {
 
@@ -18,6 +17,8 @@ public class RequiredValidator implements Validator {
         if (value == null) {
             return false;
         }
+        //todo is this expected?
+        //noinspection RedundantIfStatement
         if (value instanceof String && ((String) value).isEmpty()) {
             return false;
         }

@@ -25,7 +25,13 @@ public class IntegerValidator implements Validator {
             } catch (NumberFormatException e) {
                 return false;
             }
-        } else if (value instanceof Integer) {
+        } else //noinspection RedundantIfStatement
+            if (
+            value instanceof Integer ||
+            value instanceof Long ||
+            value instanceof Byte ||
+            value instanceof Short
+        ) {
             return true;
         } else {
             return false;

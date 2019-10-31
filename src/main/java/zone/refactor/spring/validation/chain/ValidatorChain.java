@@ -2,10 +2,7 @@ package zone.refactor.spring.validation.chain;
 
 import zone.refactor.spring.validation.validator.Validator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
@@ -29,18 +26,21 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
 
     public void validate(Map<String, Object> data) throws EXCEPTION_TYPE {
         Map<String, Collection<String>> errors = new HashMap<>();
-        for (Map.Entry<String, Object> entries : data.entrySet()) {
-            if (validators.containsKey(entries.getKey())) {
-                for (Validator validator : validators.get(entries.getKey())) {
-                    if (!validator.isValid(entries.getValue())) {
-                        Collection<String> errorList = errors
-                            .getOrDefault(entries.getKey(), new ArrayList<>());
-                        errorList.add(validator.getErrorKey());
-                        errors.put(
-                            entries.getKey(),
-                            errorList
-                        );
-                    }
+        for (Map.Entry<String, Collection<Validator>> validatorEntry : validators.entrySet()) {
+            Object value = null;
+            String key = validatorEntry.getKey();
+            if (data.containsKey(validatorEntry.getKey())) {
+                value = data.get(validatorEntry.getKey());
+            }
+            for (Validator validator : validatorEntry.getValue()) {
+                if (!validator.isValid(value)) {
+                    Collection<String> errorList = errors
+                        .getOrDefault(key, new ArrayList<>());
+                    errorList.add(validator.getErrorKey());
+                    errors.put(
+                        key,
+                        errorList
+                    );
                 }
             }
         }

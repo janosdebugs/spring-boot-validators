@@ -1,0 +1,47 @@
+package zone.refactor.spring.validation.annotation;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {
+    TestConfig.class,
+})
+@WebAppConfiguration
+public class MinValidatorProviderTest {
+    private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .build();
+    }
+
+    @Test
+    public void testValid() throws Throwable {
+        mockMvc
+            .perform(get("/min?value=3"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testInvalidQueryParam() throws Throwable {
+        mockMvc
+            .perform(get("/min?value=2"))
+            .andExpect(status().isBadRequest());
+    }
+}

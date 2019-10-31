@@ -46,6 +46,7 @@ public class ValidationAspect<T extends Exception> {
 
         ValidatorChain chain = new ValidatorChain<>(exceptionFactory);
         Map<String, Object> data = new HashMap<>();
+        int i = 0;
         for (Parameter parameter : targetMethod.getParameters()) {
             String fieldName = parameter.getName();
             PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
@@ -66,6 +67,7 @@ public class ValidationAspect<T extends Exception> {
             for (ValidatorProvider validatorProvider : validatorProviders) {
                 chain.addValidator(fieldName, validatorProvider.provide(parameter));
             }
+            data.put(fieldName, methodJoinPoint.getArgs()[i++]);
         }
         chain.validate(data);
 

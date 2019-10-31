@@ -2,10 +2,8 @@ package zone.refactor.spring.validation.annotation;
 
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.PatternValidator;
-import zone.refactor.spring.validation.validator.RequiredValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
-import javax.validation.constraints.NotNull;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,21 +1,19 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class InListValidator implements Validator {
-    private final List<String> expected;
+    private final List<Object> expected;
 
-    public InListValidator(String[] expected) {
+    public InListValidator(Object[] expected) {
         this.expected = Arrays.asList(expected);
     }
 
-    public InListValidator(List<String> expected) {
+    public InListValidator(List<Object> expected) {
         this.expected = expected;
     }
 

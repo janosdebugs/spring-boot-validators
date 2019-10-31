@@ -4,9 +4,9 @@ package zone.refactor.spring.validation.validator;
 import org.springframework.lang.Nullable;
 
 public class ExactValueValidator implements Validator {
-    private final String expected;
+    private final Object expected;
 
-    public ExactValueValidator(String expected) {
+    public ExactValueValidator(Object expected) {
         this.expected = expected;
     }
 

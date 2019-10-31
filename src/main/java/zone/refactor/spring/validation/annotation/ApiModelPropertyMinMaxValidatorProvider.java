@@ -4,13 +4,17 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.*;
 
-import javax.validation.constraints.Max;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This validator takes Swaggers `@ApiModelProperty` and interprets its `allowableValues` field if it has the format
+ * of range() or range[]. The minimum and maximum values, if not -infinity and infinity respenctively, are interpreted
+ * either as a minimum and maximum number, or as a string length.
+ */
 @Service
 public class ApiModelPropertyMinMaxValidatorProvider implements ValidatorProvider {
     private final static Pattern rangePattern = Pattern.compile(
@@ -43,7 +47,7 @@ public class ApiModelPropertyMinMaxValidatorProvider implements ValidatorProvide
             }
         }
 
-        if (parameter.getType().isAssignableFrom(String.class)) {
+        if (parameter.getType().isAssignableFrom(CharSequence.class)) {
             if (minimum != null) {
                 validators.add(new MinimumLengthValidator(minimum));
             }

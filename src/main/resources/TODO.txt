@@ -1,0 +1,16 @@
+TODO localization
+TODO autoconfig
+TODO DecimalMax
+TODO DecimalMin
+TODO Digits
+TODO Email
+TODO Future
+TODO FutureOrPresent
+TODO Negative
+TODO NegativeOrZero
+TODO Null
+TODO Past
+TODO PastOrPresent
+TODO Positive
+TODO PositiveOrZero
+TODO Size

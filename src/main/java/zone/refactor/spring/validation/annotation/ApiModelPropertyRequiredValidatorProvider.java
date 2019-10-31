@@ -10,6 +10,9 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This validator takes Swaggers `@ApiModelProperty` and interprets its `required` field as not-null validation.
+ */
 @Service
 public class ApiModelPropertyRequiredValidatorProvider implements ValidatorProvider {
     @Override

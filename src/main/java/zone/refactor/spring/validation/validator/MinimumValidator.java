@@ -2,6 +2,9 @@ package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class MinimumValidator implements Validator {
     private final long minimum;
 
@@ -26,6 +29,16 @@ public class MinimumValidator implements Validator {
             }
         } else if (value instanceof Integer) {
             return (Integer)value >= minimum;
+        } else if (value instanceof Short) {
+            return (Short)value >= minimum;
+        } else if (value instanceof Byte) {
+            return (Byte)value >= minimum;
+        } else if (value instanceof Long) {
+            return (Long)value >= minimum;
+        } else if (value instanceof BigInteger) {
+            return ((BigInteger) value).compareTo(BigInteger.valueOf(minimum)) > -1;
+        } else if (value instanceof BigDecimal) {
+            return ((BigDecimal) value).compareTo(BigDecimal.valueOf(minimum)) > -1;
         } else {
             return false;
         }

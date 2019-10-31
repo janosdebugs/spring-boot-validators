@@ -2,14 +2,17 @@ package zone.refactor.spring.validation.annotation;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.stereotype.Service;
-import zone.refactor.spring.validation.validator.*;
+import zone.refactor.spring.validation.validator.MinimumLengthValidator;
+import zone.refactor.spring.validation.validator.Validator;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * This validator takes the Swagger `@ApiModelProperty` annotation and interprets its `allowEmptyValue` field as a
+ * MinimumLengthValidator with the value of 1.
+ */
 @Service
 public class ApiModelPropertyAllowEmptyValidatorProvider implements ValidatorProvider {
     @Override

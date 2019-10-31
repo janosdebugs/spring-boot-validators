@@ -1,22 +1,24 @@
 package zone.refactor.spring.validation.annotation;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+import zone.refactor.spring.validation.validator.MinimumLengthValidator;
 import zone.refactor.spring.validation.validator.RequiredValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
+import javax.validation.constraints.NotBlank;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PathVariableRequiredValidatorProvider implements ValidatorProvider {
+public class NotBlankValidatorProvider implements ValidatorProvider {
     @Override
     public List<Validator> provide(Parameter parameter) {
-        PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
+        NotBlank annotation = parameter.getAnnotation(NotBlank.class);
         List<Validator> validators = new ArrayList<>();
-        if (pathVariable != null && pathVariable.required()) {
+        if (annotation != null && parameter.getType().isAssignableFrom(CharSequence.class)) {
             validators.add(new RequiredValidator());
+            validators.add(new MinimumLengthValidator(1));
         }
         return validators;
     }

@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 public class IntegerValidator implements Validator {
     public IntegerValidator() {
@@ -21,7 +20,7 @@ public class IntegerValidator implements Validator {
                 return true;
             }
             try {
-                Integer.parseInt((String)value);
+                Long.parseLong((String)value);
                 return true;
             } catch (NumberFormatException e) {
                 return false;

@@ -10,6 +10,10 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This validator takes the `@JsonProperty` annotation and interprets its `required`
+ * field as a not-null requirement.
+ */
 @Service
 public class JsonPropertyRequiredValidatorProvider implements ValidatorProvider {
     @Override

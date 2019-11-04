@@ -10,6 +10,9 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/refactorzone/spring-boot-validators.svg)](https://github.com/refactorzone/spring-boot-validators/pulls)
 [![GitHub](https://img.shields.io/github/license/refactorzone/spring-boot-validators)](https://github.com/refactorzone/spring-boot-validators/blob/master/LICENSE.md)
 
+> **Warning!** This repository is in early development! Some parts of the API may change until the 1.0 version.
+> If you decide to use it, make sure you key your dependency to a specific version in Maven/Gradle!
+
 This package provides validation for Spring and Spring Boot by collecting all fields from the input and then
 validating them all at once. The returned object can be used to display all errors on a form.
 
@@ -44,6 +47,9 @@ class ValidationExceptionFactory extends ExceptionFactory<MyValidationException>
     }
 }
 ```
+
+The `errors` parameter will contain a key-value set where the keys are the request field names and the value is a c
+collection of errors.
 
 ## Independent usage
 

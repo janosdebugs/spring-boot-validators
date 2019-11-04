@@ -51,6 +51,8 @@ class ValidationExceptionFactory extends ExceptionFactory<MyValidationException>
 The `errors` parameter will contain a key-value set where the keys are the request field names and the value is a c
 collection of errors.
 
+Once you have set this up you can add annotations to your controllers. For examples see [the test controller](https://github.com/refactorzone/spring-boot-validators/blob/master/src/test/java/zone/refactor/spring/validation/annotation/TestController.java).
+
 ## Independent usage
 
 If you wish to use the validation without the annotation processing you can do so using the `ValidatorChain` class:

@@ -1,5 +1,6 @@
 package zone.refactor.spring.validation.annotation;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class TestController {
         @Min(3)
         int value
     ) {
-
+        System.out.print(value);
     }
 
     @RequestMapping("/max")
@@ -25,7 +26,7 @@ public class TestController {
         @Max(3)
         int value
     ) {
-
+        System.out.print(value);
     }
 
     @RequestMapping("/pattern")
@@ -34,6 +35,23 @@ public class TestController {
         @Pattern(regexp = "\\A[a-z]+\\Z")
         String value
     ) {
+        System.out.print(value);
+    }
 
+    @RequestMapping("/api-param-allow-empty")
+    public void allowEmpty(
+        @ApiParam(allowEmptyValue = false, required = false)
+        String value
+    ) {
+        System.out.print(value);
+    }
+
+
+    @RequestMapping("/api-param-required")
+    public void apiParamRequired(
+        @ApiParam(required = true, allowEmptyValue = true)
+            String value
+    ) {
+        System.out.print(value);
     }
 }

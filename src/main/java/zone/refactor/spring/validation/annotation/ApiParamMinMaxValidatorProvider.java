@@ -1,0 +1,68 @@
+package zone.refactor.spring.validation.annotation;
+
+import io.swagger.annotations.ApiParam;
+import org.springframework.stereotype.Service;
+import zone.refactor.spring.validation.validator.*;
+
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * This validator takes Swaggers `@ApiModelProperty` and interprets its `allowableValues` field if it has the format
+ * of range() or range[]. The minimum and maximum values, if not -infinity and infinity respenctively, are interpreted
+ * either as a minimum and maximum number, or as a string length.
+ */
+@Service
+public class ApiParamMinMaxValidatorProvider implements ValidatorProvider {
+    private final static Pattern rangePattern = Pattern.compile(
+        "\\Arange(\\((?<minRound>-infinity|-?[0-9]+),(?<maxRound>-infinity|-?[0-9]+)\\)|\\[(?<minSquare>-infinity|-?[0-9]+),(?<maxSquare>-infinity|-?[0-9]+)])\\Z"
+    );
+    @Override
+    public List<Validator> provide(Parameter parameter) {
+        ApiParam apiParam = parameter.getAnnotation(ApiParam.class);
+        List<Validator> validators = new ArrayList<>();
+        Long minimum = null;
+        Long maximum = null;
+        if (apiParam != null && !apiParam.allowableValues().isEmpty()) {
+            Matcher matcher = rangePattern.matcher(apiParam.allowableValues());
+            if (matcher.matches()) {
+                if (matcher.group("minRound") != null && matcher.group("maxRound") != null) {
+                    if (!matcher.group("minRound").equalsIgnoreCase("-infinity")) {
+                        minimum = Long.parseLong(matcher.group("minRound"));
+                    }
+                    if (!matcher.group("maxRound").equalsIgnoreCase("infinity")) {
+                        maximum = Long.parseLong(matcher.group("maxRound"));
+                    }
+                } else if (matcher.group("minSquare") != null && matcher.group("maxSquare") != null) {
+                    if (!matcher.group("minSquare").equalsIgnoreCase("-infinity")) {
+                        minimum = Long.parseLong(matcher.group("minSquare"));
+                    }
+                    if (!matcher.group("maxSquare").equalsIgnoreCase("infinity")) {
+                        maximum = Long.parseLong(matcher.group("maxSquare"));
+                    }
+                }
+            }
+        }
+
+        if (parameter.getType().isAssignableFrom(CharSequence.class)) {
+            if (minimum != null) {
+                validators.add(new MinimumLengthValidator(minimum));
+            }
+            if (maximum != null) {
+                validators.add(new MaximumLengthValidator(maximum));
+            }
+        } else {
+            if (minimum != null) {
+                validators.add(new MinimumValidator(minimum));
+            }
+            if (maximum != null) {
+                validators.add(new MaximumValidator(maximum));
+            }
+        }
+
+        return validators;
+    }
+}

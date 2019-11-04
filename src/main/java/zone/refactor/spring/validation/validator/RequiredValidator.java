@@ -17,11 +17,6 @@ public class RequiredValidator implements Validator {
         if (value == null) {
             return false;
         }
-        //todo is this expected?
-        //noinspection RedundantIfStatement
-        if (value instanceof String && ((String) value).isEmpty()) {
-            return false;
-        }
         return true;
     }
 }

@@ -1,18 +1,17 @@
 package zone.refactor.spring.validation.annotation;
 
-import org.junit.Before;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {
@@ -20,28 +19,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @WebAppConfiguration
 public class MinValidatorProviderTest {
-    private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+    private static Thread thread = new Thread(() -> {SpringApplication.run(TestApplication.class);});
+    @BeforeClass
+    public static void setUp() {
+        thread.start();
+        boolean connected = false;
+        for (int i = 0; i < 10; i++) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                thread.interrupt();
+                throw new RuntimeException(e);
+            }
+            try {
+                HttpResponse<String> result = Unirest.get("http://localhost:8080").asString();
+                connected = true;
+            } catch (Exception e) {
+            }
+        }
+        if (!connected) {
+            throw new RuntimeException("Server failed to start");
+        }
+    }
 
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .build();
+    @AfterClass
+    public static void tearDown() {
+        thread.interrupt();
     }
 
     @Test
     public void testValid() throws Throwable {
-        mockMvc
-            .perform(get("/min?value=3"))
-            .andExpect(status().isOk());
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/min?value=3").asString();
+        assertEquals(200, result.getStatus());
     }
 
     @Test
     public void testInvalidQueryParam() throws Throwable {
-        mockMvc
-            .perform(get("/min?value=2"))
-            .andExpect(status().isBadRequest());
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/min?value=2").asString();
+        assertEquals(400, result.getStatus());
     }
 }

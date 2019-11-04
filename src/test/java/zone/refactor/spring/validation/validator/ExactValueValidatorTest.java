@@ -1,8 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.junit.Test;
-import zone.refactor.spring.validation.localization.BuiltInLocalizationService;
-import zone.refactor.spring.validation.validator.ExactValueValidator;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;

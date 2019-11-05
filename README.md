@@ -3,6 +3,7 @@
 [![CircleCI](https://img.shields.io/circleci/build/gh/refactorzone/spring-boot-validators)](https://circleci.com/gh/refactorzone/spring-boot-validators)
 [![Maven Central](https://img.shields.io/maven-central/v/zone.refactor.spring/validation)](https://search.maven.org/search?q=g:zone.refactor.spring%20AND%20a:validation)
 [![Code Quality](https://img.shields.io/lgtm/grade/java/g/refactorzone/spring-boot-validators.svg)](https://lgtm.com/projects/g/refactorzone/spring-boot-validators/)
+[![Codecov](https://img.shields.io/codecov/c/gh/refactorzone/spring-boot-validators)](https://codecov.io/gh/refactorzone/spring-boot-validators)
 [![GitHub last commit](https://img.shields.io/github/last-commit/refactorzone/spring-boot-validators)](https://github.com/refactorzone/spring-boot-validators)
 [![GitHub top language](https://img.shields.io/github/languages/top/refactorzone/spring-boot-validators.svg)](https://github.com/refactorzone/spring-boot-validators)
 [![GitHub repo size](https://img.shields.io/github/repo-size/refactorzone/spring-boot-validators.svg)](https://github.com/refactorzone/spring-boot-validators)

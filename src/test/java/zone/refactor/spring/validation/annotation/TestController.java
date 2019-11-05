@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import java.math.BigInteger;
 
 @RestController
 public class TestController {
@@ -50,6 +51,62 @@ public class TestController {
     @RequestMapping("/api-param-required")
     public void apiParamRequired(
         @ApiParam(required = true, allowEmptyValue = true)
+            String value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-enum")
+    public void apiParamEnum(
+        @ApiParam(allowableValues = "asdf,xcvb")
+            String value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-enum-boolean")
+    public void apiParamEnum(
+        @ApiParam(allowableValues = "true")
+            Boolean value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-enum-integer")
+    public void apiParamInteger(
+        @ApiParam(allowableValues = "3,4,5")
+            Integer value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-enum-bigint")
+    public void apiParamInteger(
+        @ApiParam(allowableValues = "3,4,5")
+            BigInteger value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-minmax")
+    public void minMax(
+        @ApiParam(allowableValues = "range(2,4)")
+            Integer value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-minmax-square")
+    public void minMaxSquare(
+        @ApiParam(allowableValues = "range[2,4]")
+            Integer value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-minmax-string")
+    public void minMaxString(
+        @ApiParam(allowableValues = "range[2,4]")
             String value
     ) {
         System.out.print(value);

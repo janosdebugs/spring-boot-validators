@@ -17,7 +17,7 @@ abstract class AllowableValuesMinMaxValidatorProvider implements ValidatorProvid
         Long minimum = null;
         Long maximum = null;
         List<Validator> validators = new ArrayList<>();
-        if (allowableValues != null && allowableValues.isEmpty()) {
+        if (allowableValues != null && !allowableValues.isEmpty()) {
             Matcher matcher = rangePattern.matcher(allowableValues);
             if (matcher.matches()) {
                 if (matcher.group("minRound") != null && matcher.group("maxRound") != null) {
@@ -38,7 +38,7 @@ abstract class AllowableValuesMinMaxValidatorProvider implements ValidatorProvid
             }
         }
 
-        if (parameter.getType().isAssignableFrom(CharSequence.class)) {
+        if (CharSequence.class.isAssignableFrom(parameter.getType())) {
             if (minimum != null) {
                 validators.add(new MinimumLengthValidator(minimum));
             }

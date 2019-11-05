@@ -5,6 +5,7 @@ import zone.refactor.spring.validation.validator.InListValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
 import java.lang.reflect.Parameter;
+import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ abstract class AllowableValuesEnumValidatorProvider implements ValidatorProvider
             List<String> allowableValuesList = Arrays.asList(allowableValues.split(",", -1));
 
             List<Object> finalAllowableValues;
-            if (parameter.getType().isAssignableFrom(Boolean.class)) {
+            if (Boolean.class.isAssignableFrom(parameter.getType())) {
                 finalAllowableValues = allowableValuesList.stream().map(
                     value -> {
                         if (value.equalsIgnoreCase("true")) {
@@ -39,7 +40,29 @@ abstract class AllowableValuesEnumValidatorProvider implements ValidatorProvider
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Integer.class)) {
+            } else if (String.class.isAssignableFrom(parameter.getType())) {
+                finalAllowableValues = Arrays.asList(allowableValues.split(",", -1));
+            } else if (BigInteger.class.isAssignableFrom(parameter.getType())) {
+                finalAllowableValues = allowableValuesList.stream().map(
+                    value -> {
+                        try {
+                            return new BigInteger(value);
+                        } catch (NumberFormatException e) {
+                            throw new InvalidParameterException("Invalid value for BigInteger: " + value + " on field " + parameter.getName());
+                        }
+                    }
+                ).collect(Collectors.toList());
+            } else if (Long.class.isAssignableFrom(parameter.getType())) {
+                finalAllowableValues = allowableValuesList.stream().map(
+                    value -> {
+                        try {
+                            return Long.parseLong(value);
+                        } catch (NumberFormatException e) {
+                            throw new InvalidParameterException("Invalid value for long: " + value + " on field " + parameter.getName());
+                        }
+                    }
+                ).collect(Collectors.toList());
+            } else if (Integer.class.isAssignableFrom(parameter.getType())) {
                 finalAllowableValues = allowableValuesList.stream().map(
                     value -> {
                         try {
@@ -49,7 +72,7 @@ abstract class AllowableValuesEnumValidatorProvider implements ValidatorProvider
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Short.class)) {
+            } else if (Short.class.isAssignableFrom(parameter.getType())) {
                 finalAllowableValues = allowableValuesList.stream().map(
                     value -> {
                         try {
@@ -59,23 +82,13 @@ abstract class AllowableValuesEnumValidatorProvider implements ValidatorProvider
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Byte.class)) {
+            } else if (Byte.class.isAssignableFrom(parameter.getType())) {
                 finalAllowableValues = allowableValuesList.stream().map(
                     value -> {
                         try {
                             return Byte.parseByte(value);
                         } catch (NumberFormatException e) {
                             throw new InvalidParameterException("Invalid value for byte: " + value + " on field " + parameter.getName());
-                        }
-                    }
-                ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Long.class)) {
-                finalAllowableValues = allowableValuesList.stream().map(
-                    value -> {
-                        try {
-                            return Long.parseLong(value);
-                        } catch (NumberFormatException e) {
-                            throw new InvalidParameterException("Invalid value for long: " + value + " on field " + parameter.getName());
                         }
                     }
                 ).collect(Collectors.toList());

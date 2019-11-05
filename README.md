@@ -16,6 +16,24 @@
 This package provides validation for Spring and Spring Boot by collecting all fields from the input and then
 validating them all at once. The returned object can be used to display all errors on a form.
 
+For example, you could create a controller like this:
+
+```java
+public class HelloController {
+    @RequestMapping("/hello")
+    public String hello(
+        @RequestParam
+        @ApiParam(allowableValues="range(1,infinity)")
+        String name
+    ) {
+        return "Hello, " + name;
+    }
+}
+```
+
+In this case the `@ApiParam` annotation, which normally serves Swagger documentation, will be used for validation
+purposes. This library supports Swagger and Java validation constraints.
+
 ## Installation
 
 This package can be installed from Maven Central:

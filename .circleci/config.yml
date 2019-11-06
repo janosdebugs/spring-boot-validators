@@ -64,6 +64,9 @@ jobs:
           name: Build
           command: mvn clean package
       - run:
+          name: Code coverage
+          command: mvn cobertura:cobertura
+      - run:
           name: CodeCov
           command: bash <(curl -s https://codecov.io/bash)
       - save_cache:
@@ -92,6 +95,9 @@ jobs:
       - run:
           name: Build
           command: mvn clean package
+      - run:
+          name: Code coverage
+          command: mvn cobertura:cobertura
       - run:
           name: CodeCov
           command: bash <(curl -s https://codecov.io/bash)

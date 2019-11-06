@@ -4,46 +4,52 @@ jobs:
     docker:
     - image: circleci/openjdk:8-jdk-browsers
     steps:
-    - checkout
-    - run:
-        name: Set Maven version
-        command: mvn versions:set -DnewVersion=${CIRCLE_BRANCH}-SNAPSHOT
-    - restore_cache:
-        key: validators
-    - run:
-        name: Copy Maven settings.xml
-        command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
-    - run:
-        name: Build
-        command: mvn clean package
-    - run:
-        name: CodeCov
-        command: bash <(curl -s https://codecov.io/bash)
-    - save_cache:
-        paths:
-        - ~/.m2
-        key: validators
+      - checkout
+      - run:
+          name: Set Maven version
+          command: mvn versions:set -DnewVersion=${CIRCLE_BRANCH}-SNAPSHOT
+      - restore_cache:
+          key: validators
+      - run:
+          name: Copy Maven settings.xml
+          command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+      - run:
+          name: Build
+          command: mvn clean package
+      - run:
+          name: Code coverage
+          command: mvn cobertura:cobertura
+      - run:
+          name: CodeCov upload
+          command: bash <(curl -s https://codecov.io/bash)
+      - save_cache:
+          paths:
+          - ~/.m2
+          key: validators
   build-tag:
     docker:
     - image: circleci/openjdk:8-jdk-browsers
     steps:
-    - checkout
-    - run: mvn versions:set -DnewVersion=${CIRCLE_TAG}
-    - restore_cache:
-        key: validators
-    - run:
-        name: Copy Maven settings.xml
-        command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
-    - run:
-        name: Build
-        command: mvn clean package
-    - run:
-        name: CodeCov
-        command: bash <(curl -s https://codecov.io/bash)
-    - save_cache:
-        paths:
-        - ~/.m2
-        key: validators
+      - checkout
+      - run: mvn versions:set -DnewVersion=${CIRCLE_TAG}
+      - restore_cache:
+          key: validators
+      - run:
+          name: Copy Maven settings.xml
+          command: mkdir -p ~/.m2 && cp .circleci/settings.xml ~/.m2/
+      - run:
+          name: Build
+          command: mvn clean package
+      - run:
+          name: Code coverage
+          command: mvn cobertura:cobertura
+      - run:
+          name: CodeCov upload
+          command: bash <(curl -s https://codecov.io/bash)
+      - save_cache:
+          paths:
+          - ~/.m2
+          key: validators
   build-and-deploy-branch:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -67,7 +73,7 @@ jobs:
           name: Code coverage
           command: mvn cobertura:cobertura
       - run:
-          name: CodeCov
+          name: CodeCov upload
           command: bash <(curl -s https://codecov.io/bash)
       - save_cache:
           paths:
@@ -99,7 +105,7 @@ jobs:
           name: Code coverage
           command: mvn cobertura:cobertura
       - run:
-          name: CodeCov
+          name: CodeCov upload
           command: bash <(curl -s https://codecov.io/bash)
       - save_cache:
           paths:

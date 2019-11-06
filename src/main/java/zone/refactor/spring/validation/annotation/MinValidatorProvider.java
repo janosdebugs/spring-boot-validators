@@ -1,16 +1,15 @@
 package zone.refactor.spring.validation.annotation;
 
 import org.springframework.stereotype.Service;
-import zone.refactor.spring.validation.validator.MinimumLengthValidator;
 import zone.refactor.spring.validation.validator.MinimumValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
 import javax.validation.constraints.Min;
 import java.lang.reflect.Parameter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This validator takes the `@Min` annotation and turns it into either a numeric minimum validator, or if the target
@@ -25,12 +24,17 @@ public class MinValidatorProvider implements ValidatorProvider {
         List<Validator> validators = new ArrayList<>();
         if (min != null) {
             if (
-                parameter.getType().isAssignableFrom(CharSequence.class) ||
-                parameter.getType().isAssignableFrom(Collection.class) ||
-                parameter.getType().isAssignableFrom(Map.class)
+                BigDecimal.class.isAssignableFrom(parameter.getType()) ||
+                BigInteger.class.isAssignableFrom(parameter.getType()) ||
+                Byte.class.isAssignableFrom(parameter.getType()) ||
+                Short.class.isAssignableFrom(parameter.getType()) ||
+                Integer.class.isAssignableFrom(parameter.getType()) ||
+                Long.class.isAssignableFrom(parameter.getType()) ||
+                byte.class.isAssignableFrom(parameter.getType()) ||
+                short.class.isAssignableFrom(parameter.getType()) ||
+                int.class.isAssignableFrom(parameter.getType()) ||
+                long.class.isAssignableFrom(parameter.getType())
             ) {
-                validators.add(new MinimumLengthValidator(min.value()));
-            } else {
                 validators.add(new MinimumValidator(min.value()));
             }
         }

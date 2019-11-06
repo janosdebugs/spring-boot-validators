@@ -32,6 +32,18 @@ public class ApiParamEnumTest extends AbstractTest {
     }
 
     @Test
+    public void testBooleanValidFalse() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-false?value=false").asString();
+        assertEquals(200, result.getStatus());
+    }
+
+    @Test
+    public void testBooleanInvalidFalse() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-false?value=true").asString();
+        assertEquals(400, result.getStatus());
+    }
+
+    @Test
     public void testIntegerValid() throws Throwable {
         HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-integer?value=3").asString();
         assertEquals(200, result.getStatus());

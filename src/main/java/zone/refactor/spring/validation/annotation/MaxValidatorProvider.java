@@ -1,16 +1,15 @@
 package zone.refactor.spring.validation.annotation;
 
 import org.springframework.stereotype.Service;
-import zone.refactor.spring.validation.validator.MaximumLengthValidator;
 import zone.refactor.spring.validation.validator.MaximumValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
 import javax.validation.constraints.Max;
 import java.lang.reflect.Parameter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This validator takes the `@Max` annotation and turns it into either a numeric maximum validator, or if the target
@@ -24,12 +23,17 @@ public class MaxValidatorProvider implements ValidatorProvider {
         List<Validator> validators = new ArrayList<>();
         if (max != null) {
             if (
-                parameter.getType().isAssignableFrom(CharSequence.class) ||
-                parameter.getType().isAssignableFrom(Collection.class) ||
-                parameter.getType().isAssignableFrom(Map.class)
+                BigDecimal.class.isAssignableFrom(parameter.getType()) ||
+                BigInteger.class.isAssignableFrom(parameter.getType()) ||
+                Byte.class.isAssignableFrom(parameter.getType()) ||
+                Short.class.isAssignableFrom(parameter.getType()) ||
+                Integer.class.isAssignableFrom(parameter.getType()) ||
+                Long.class.isAssignableFrom(parameter.getType()) ||
+                byte.class.isAssignableFrom(parameter.getType()) ||
+                short.class.isAssignableFrom(parameter.getType()) ||
+                int.class.isAssignableFrom(parameter.getType()) ||
+                long.class.isAssignableFrom(parameter.getType())
             ) {
-                validators.add(new MaximumLengthValidator(max.value()));
-            } else {
                 validators.add(new MaximumValidator(max.value()));
             }
         }

@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.math.BigInteger;
 
 @RestController
@@ -72,6 +70,14 @@ public class TestController {
         System.out.print(value);
     }
 
+    @RequestMapping("/api-param-enum-false")
+    public void apiParamEnumFalse(
+        @ApiParam(allowableValues = "false")
+            Boolean value
+    ) {
+        System.out.print(value);
+    }
+
     @RequestMapping("/api-param-enum-integer")
     public void apiParamInteger(
         @ApiParam(allowableValues = "3,4,5")
@@ -108,6 +114,24 @@ public class TestController {
     public void minMaxString(
         @ApiParam(allowableValues = "range[2,4]")
             String value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/assert-false")
+    public void assertFalse(
+        @RequestParam
+        @AssertFalse
+            Boolean value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/assert-true")
+    public void assertTrue(
+        @RequestParam
+        @AssertTrue
+            Boolean value
     ) {
         System.out.print(value);
     }

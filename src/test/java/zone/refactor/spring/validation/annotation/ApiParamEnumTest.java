@@ -66,4 +66,42 @@ public class ApiParamEnumTest extends AbstractTest {
         HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-bigint?value=1").asString();
         assertEquals(400, result.getStatus());
     }
+
+    @Test
+    public void testLongValid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-long?value=3").asString();
+        assertEquals(200, result.getStatus());
+    }
+
+    @Test
+    public void testLongInvalid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-long?value=1").asString();
+        assertEquals(400, result.getStatus());
+    }
+
+
+    @Test
+    public void testShortValid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-short?value=3").asString();
+        assertEquals(200, result.getStatus());
+    }
+
+    @Test
+    public void testShortInvalid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-short?value=1").asString();
+        assertEquals(400, result.getStatus());
+    }
+
+
+    @Test
+    public void testByteValid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-byte?value=3").asString();
+        assertEquals(200, result.getStatus());
+    }
+
+    @Test
+    public void testByteInvalid() throws Throwable {
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/api-param-enum-byte?value=1").asString();
+        assertEquals(400, result.getStatus());
+    }
 }

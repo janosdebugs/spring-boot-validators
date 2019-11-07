@@ -94,6 +94,31 @@ public class TestController {
         System.out.print(value);
     }
 
+    @RequestMapping("/api-param-enum-long")
+    public void apiParamLong(
+        @ApiParam(allowableValues = "3,4,5")
+            Long value
+    ) {
+        System.out.print(value);
+    }
+
+    @RequestMapping("/api-param-enum-short")
+    public void apiParamShort(
+        @ApiParam(allowableValues = "3,4,5")
+            Short value
+    ) {
+        System.out.print(value);
+    }
+
+
+    @RequestMapping("/api-param-enum-byte")
+    public void apiParamByte(
+        @ApiParam(allowableValues = "3,4,5")
+            Byte value
+    ) {
+        System.out.print(value);
+    }
+
     @RequestMapping("/api-param-minmax")
     public void minMax(
         @ApiParam(allowableValues = "range(2,4)")

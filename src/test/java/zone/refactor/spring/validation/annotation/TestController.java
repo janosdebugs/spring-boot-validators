@@ -1,10 +1,14 @@
 package zone.refactor.spring.validation.annotation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigInteger;
 
@@ -159,5 +163,26 @@ public class TestController {
             Boolean value
     ) {
         System.out.print(value);
+    }
+
+    @RequestMapping("/subobject")
+    public void subobject(
+        @RequestBody
+        @Valid
+        TestRequest request
+    ) {
+        System.out.println(request);
+    }
+
+    public static class TestRequest {
+        @ApiModelProperty(required = true)
+        public final String test;
+
+        public TestRequest(
+            @JsonProperty(value = "test")
+            String test
+        ) {
+            this.test = test;
+        }
     }
 }

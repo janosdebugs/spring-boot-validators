@@ -20,6 +20,10 @@ public class RefactorZoneValidationAutoConfiguration {
             new ApiModelPropertyEnumValidatorProvider(),
             new ApiModelPropertyMinMaxValidatorProvider(),
             new ApiModelPropertyRequiredValidatorProvider(),
+            new ApiParamAllowEmptyValidatorProvider(),
+            new ApiParamEnumValidatorProvider(),
+            new ApiParamMinMaxValidatorProvider(),
+            new ApiParamRequiredValidatorProvider(),
             new AssertFalseValidatorProvider(),
             new AssertTrueValidatorProvider(),
             new JsonPropertyRequiredValidatorProvider(),
@@ -31,6 +35,22 @@ public class RefactorZoneValidationAutoConfiguration {
             new PathVariableRequiredValidatorProvider(),
             new PatternValidatorProvider(),
             new RequestParamRequiredValidatorProvider()
+        );
+    }
+
+
+
+    @Bean
+    @ConditionalOnMissingBean(ValidationAspect.class)
+    @RequestScope
+    public <T extends Exception> ValidationAspect<T> createAspect(
+        Collection<ValidatorProvider> validatorProviders,
+        @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+            ExceptionFactory<T> exceptionFactory
+    ) {
+        return new ValidationAspect<>(
+            validatorProviders,
+            exceptionFactory
         );
     }
 }

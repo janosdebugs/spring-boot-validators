@@ -79,7 +79,13 @@ public class ValidationAspect<T extends Exception> {
             Valid valid = parameter.getAnnotation(Valid.class);
             if (valid != null) {
                 //Subobject validation
-                chain.addPlugin(new EntityValidatorPlugin<>(fieldName, new EntityValidator<>(exceptionFactory, validatorProviders)));
+                chain.addPlugin(
+                    new EntityValidatorPlugin<>(
+                        fieldName,
+                        parameter.getType(),
+                        new EntityValidator<>(exceptionFactory, validatorProviders)
+                    )
+                );
             }
             //endregion
 

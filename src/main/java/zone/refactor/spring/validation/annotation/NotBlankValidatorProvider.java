@@ -17,11 +17,13 @@ public class NotBlankValidatorProvider extends AnnotationValidatorProvider<NotBl
     @Override
     public List<Validator> provide(@Nullable final NotBlank annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
-        if (annotation != null && type.isAssignableFrom(CharSequence.class)) {
-            validators.add(new RequiredValidator());
-            validators.add(new MinimumLengthValidator(1));
-        } else {
-            throw new RuntimeException("BUG: the @NotBlank annotation does not make sense on a " + type.getSimpleName() + " type, only supported on CharSequence types (found on " + source + ")");
+        if (annotation != null) {
+            if (type.isAssignableFrom(CharSequence.class)) {
+                validators.add(new RequiredValidator());
+                validators.add(new MinimumLengthValidator(1));
+            } else {
+                throw new RuntimeException("BUG: the @NotBlank annotation does not make sense on a " + type.getSimpleName() + " type, only supported on CharSequence types (found on " + source + ")");
+            }
         }
         return validators;
     }

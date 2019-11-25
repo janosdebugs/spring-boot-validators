@@ -23,11 +23,7 @@ public abstract class AnnotationValidatorProvider<T extends Annotation> implemen
     @Override
     public List<Validator> provide(final Parameter parameter) {
         T annotation = parameter.getAnnotation(classDefinition);
-        if (Modifier.isPublic(parameter.getModifiers())) {
-            return provide(annotation, parameter.getType(), parameter.getName());
-        } else {
-            return Collections.emptyList();
-        }
+        return provide(annotation, parameter.getType(), parameter.getName());
     }
 
     @Override

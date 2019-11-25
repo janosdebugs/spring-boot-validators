@@ -6,16 +6,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MinValidatorProviderTest extends AbstractTest {
+public class AssertFalseProviderTest extends AbstractTest {
     @Test
     public void testValid() throws Throwable {
-        HttpResponse<String> result = Unirest.get("http://localhost:8080/min?value=3").asString();
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/assert-false?value=false").asString();
         assertEquals(200, result.getStatus());
     }
 
     @Test
     public void testInvalidQueryParam() throws Throwable {
-        HttpResponse<String> result = Unirest.get("http://localhost:8080/min?value=2").asString();
+        HttpResponse<String> result = Unirest.get("http://localhost:8080/assert-false?value=true").asString();
         assertEquals(400, result.getStatus());
     }
 }

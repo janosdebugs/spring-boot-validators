@@ -2,6 +2,8 @@ package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
 
+import java.util.List;
+
 public interface Validator {
     /**
      * @return a unique error key object. This can be either directly returned, or internally provided by a TypeService

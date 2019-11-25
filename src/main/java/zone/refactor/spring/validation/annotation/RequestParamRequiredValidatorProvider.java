@@ -5,17 +5,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import zone.refactor.spring.validation.validator.RequiredValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
-import java.lang.reflect.Parameter;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RequestParamRequiredValidatorProvider implements ValidatorProvider {
+public class RequestParamRequiredValidatorProvider extends AnnotationValidatorProvider<RequestParam> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        RequestParam requestParam = parameter.getAnnotation(RequestParam.class);
+    public List<Validator> provide(@Nullable final RequestParam annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
-        if (requestParam != null && requestParam.required()) {
+        if (annotation != null && annotation.required()) {
             validators.add(new RequiredValidator());
         }
         return validators;

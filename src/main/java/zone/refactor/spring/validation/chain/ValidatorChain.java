@@ -1,6 +1,8 @@
 package zone.refactor.spring.validation.chain;
 
+import zone.refactor.spring.validation.entity.EntityValidatorPlugin;
 import zone.refactor.spring.validation.validator.Validator;
+import zone.refactor.spring.validation.validator.ValidatorChainPlugin;
 
 import java.util.*;
 
@@ -8,9 +10,17 @@ import java.util.*;
 public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
     private final Map<String, Collection<Validator>> validators = new HashMap<>();
     private final ExceptionFactory<EXCEPTION_TYPE> exceptionFactory;
+    private List<ValidatorChainPlugin> plugins = new ArrayList<>();
 
-    public ValidatorChain(ExceptionFactory<EXCEPTION_TYPE> exceptionFactory) {
+    public ValidatorChain(
+        //todo remove exceptionFactory
+        ExceptionFactory<EXCEPTION_TYPE> exceptionFactory
+    ) {
         this.exceptionFactory = exceptionFactory;
+    }
+
+    public synchronized void addPlugin(final ValidatorChainPlugin plugin) {
+        plugins.add(plugin);
     }
 
     public synchronized void addValidator(String field, Validator validator) {
@@ -24,8 +34,9 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
         validators.forEach(validator -> addValidator(field, validator));
     }
 
-    public void validate(Map<String, Object> data) throws EXCEPTION_TYPE {
+    public Map<String, Collection<String>> getErrors(Map<String, Object> data) {
         Map<String, Collection<String>> errors = new HashMap<>();
+
         for (Map.Entry<String, Collection<Validator>> validatorEntry : validators.entrySet()) {
             Object value = null;
             String key = validatorEntry.getKey();
@@ -44,8 +55,20 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
                 }
             }
         }
+
+        for (ValidatorChainPlugin plugin : plugins) {
+            plugin.process(data, errors);
+        }
+
+        return errors;
+    }
+
+    public void validate(Map<String, Object> data) throws EXCEPTION_TYPE {
+        Map<String, Collection<String>> errors = getErrors(data);
+
         if (!errors.isEmpty()) {
             exceptionFactory.create(errors);
         }
     }
+
 }

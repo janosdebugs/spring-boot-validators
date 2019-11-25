@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.RequestScope;
 import zone.refactor.spring.validation.chain.ExceptionFactory;
 import zone.refactor.spring.validation.chain.ValidatorChain;
+import zone.refactor.spring.validation.entity.EntityValidator;
+import zone.refactor.spring.validation.entity.EntityValidatorPlugin;
 
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -48,6 +51,7 @@ public class ValidationAspect<T extends Exception> {
         Map<String, Object> data = new HashMap<>();
         int i = 0;
         for (Parameter parameter : targetMethod.getParameters()) {
+            //region Field name
             String fieldName = parameter.getName();
             PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
             if (pathVariable != null && !pathVariable.name().isEmpty()) {
@@ -63,11 +67,25 @@ public class ValidationAspect<T extends Exception> {
             if (requestParam != null && !requestParam.name().isEmpty()) {
                 fieldName = requestParam.name();
             }
+            //endregion
 
+            //region Validators
             for (ValidatorProvider validatorProvider : validatorProviders) {
                 chain.addValidator(fieldName, validatorProvider.provide(parameter));
             }
+            //endregion
+
+            //region Subobjects
+            Valid valid = parameter.getAnnotation(Valid.class);
+            if (valid != null) {
+                //Subobject validation
+                chain.addPlugin(new EntityValidatorPlugin<>(fieldName, new EntityValidator<>(exceptionFactory, validatorProviders)));
+            }
+            //endregion
+
+            //region Data
             data.put(fieldName, methodJoinPoint.getArgs()[i++]);
+            //endregion
         }
         chain.validate(data);
 

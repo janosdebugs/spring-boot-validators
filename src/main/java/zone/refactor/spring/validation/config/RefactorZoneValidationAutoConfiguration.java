@@ -33,18 +33,4 @@ public class RefactorZoneValidationAutoConfiguration {
             new RequestParamRequiredValidatorProvider()
         );
     }
-
-    @Bean
-    @ConditionalOnMissingBean(ValidationAspect.class)
-    @RequestScope
-    public <T extends Exception> ValidationAspect<T> createAspect(
-        Collection<ValidatorProvider> validatorProviders,
-        @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-            ExceptionFactory<T> exceptionFactory
-    ) {
-        return new ValidationAspect<>(
-            validatorProviders,
-            exceptionFactory
-        );
-    }
 }

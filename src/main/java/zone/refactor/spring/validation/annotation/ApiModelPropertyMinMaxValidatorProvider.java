@@ -1,6 +1,7 @@
 package zone.refactor.spring.validation.annotation;
 
 import io.swagger.annotations.ApiModelProperty;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.*;
 
@@ -16,18 +17,18 @@ import java.util.regex.Pattern;
  * either as a minimum and maximum number, or as a string length.
  */
 @Service
-public class ApiModelPropertyMinMaxValidatorProvider implements ValidatorProvider {
+public class ApiModelPropertyMinMaxValidatorProvider extends AnnotationValidatorProvider<ApiModelProperty> {
     private final static Pattern rangePattern = Pattern.compile(
         "\\Arange(\\((?<minRound>-infinity|-?[0-9]+),(?<maxRound>-infinity|-?[0-9]+)\\)|\\[(?<minSquare>-infinity|-?[0-9]+),(?<maxSquare>-infinity|-?[0-9]+)])\\Z"
     );
+
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        ApiModelProperty apiModelProperty = parameter.getAnnotation(ApiModelProperty.class);
+    public List<Validator> provide(@Nullable final ApiModelProperty annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
         Long minimum = null;
         Long maximum = null;
-        if (apiModelProperty != null && !apiModelProperty.allowableValues().isEmpty()) {
-            Matcher matcher = rangePattern.matcher(apiModelProperty.allowableValues());
+        if (annotation != null && !annotation.allowableValues().isEmpty()) {
+            Matcher matcher = rangePattern.matcher(annotation.allowableValues());
             if (matcher.matches()) {
                 if (matcher.group("minRound") != null && matcher.group("maxRound") != null) {
                     if (!matcher.group("minRound").equalsIgnoreCase("-infinity")) {
@@ -47,7 +48,7 @@ public class ApiModelPropertyMinMaxValidatorProvider implements ValidatorProvide
             }
         }
 
-        if (parameter.getType().isAssignableFrom(CharSequence.class)) {
+        if (type.isAssignableFrom(CharSequence.class)) {
             if (minimum != null) {
                 validators.add(new MinimumLengthValidator(minimum));
             }

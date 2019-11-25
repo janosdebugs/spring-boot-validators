@@ -1,6 +1,7 @@
 package zone.refactor.spring.validation.annotation;
 
 import io.swagger.annotations.ApiModelProperty;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.InListValidator;
 import zone.refactor.spring.validation.validator.Validator;
@@ -17,10 +18,9 @@ import java.util.stream.Collectors;
  * of comma separated values and turns it into an enum validation.
  */
 @Service
-public class ApiModelPropertyEnumValidatorProvider implements ValidatorProvider {
+public class ApiModelPropertyEnumValidatorProvider extends AnnotationValidatorProvider<ApiModelProperty> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        ApiModelProperty apiModelProperty = parameter.getAnnotation(ApiModelProperty.class);
+    public List<Validator> provide(@Nullable final ApiModelProperty apiModelProperty, final Class<?> type, String source) {
         List<Validator> validators = new ArrayList<>();
         if (
             apiModelProperty != null &&
@@ -31,7 +31,7 @@ public class ApiModelPropertyEnumValidatorProvider implements ValidatorProvider 
             List<String> allowableValues = Arrays.asList(apiModelProperty.allowableValues().split(",", -1));
 
             List<Object> finalAllowableValues;
-            if (parameter.getType().isAssignableFrom(Boolean.class)) {
+            if (type.isAssignableFrom(Boolean.class)) {
                 finalAllowableValues = allowableValues.stream().map(
                     value -> {
                         if (value.equalsIgnoreCase("true")) {
@@ -43,48 +43,48 @@ public class ApiModelPropertyEnumValidatorProvider implements ValidatorProvider 
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Integer.class)) {
+            } else if (type.isAssignableFrom(Integer.class)) {
                 finalAllowableValues = allowableValues.stream().map(
                     value -> {
                         try {
                             return Integer.parseInt(value);
                         } catch (NumberFormatException e) {
-                            throw new InvalidParameterException("Invalid value for integers: " + value + " on field " + parameter.getName());
+                            throw new InvalidParameterException("Invalid value for integers: " + value + " on " + source);
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Short.class)) {
+            } else if (type.isAssignableFrom(Short.class)) {
                 finalAllowableValues = allowableValues.stream().map(
                     value -> {
                         try {
                             return Short.parseShort(value);
                         } catch (NumberFormatException e) {
-                            throw new InvalidParameterException("Invalid value for short: " + value + " on field " + parameter.getName());
+                            throw new InvalidParameterException("Invalid value for short: " + value + " on " + source);
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Byte.class)) {
+            } else if (type.isAssignableFrom(Byte.class)) {
                 finalAllowableValues = allowableValues.stream().map(
                     value -> {
                         try {
                             return Byte.parseByte(value);
                         } catch (NumberFormatException e) {
-                            throw new InvalidParameterException("Invalid value for byte: " + value + " on field " + parameter.getName());
+                            throw new InvalidParameterException("Invalid value for byte: " + value + " on " + source);
                         }
                     }
                 ).collect(Collectors.toList());
-            } else if (parameter.getType().isAssignableFrom(Long.class)) {
+            } else if (type.isAssignableFrom(Long.class)) {
                 finalAllowableValues = allowableValues.stream().map(
                     value -> {
                         try {
                             return Long.parseLong(value);
                         } catch (NumberFormatException e) {
-                            throw new InvalidParameterException("Invalid value for long: " + value + " on field " + parameter.getName());
+                            throw new InvalidParameterException("Invalid value for long: " + value + " on " + source);
                         }
                     }
                 ).collect(Collectors.toList());
             } else {
-                throw new InvalidParameterException("Unsupported data type for enum validation: " + parameter.getType().getSimpleName() + " on field " + parameter.getName());
+                throw new InvalidParameterException("Unsupported data type for enum validation: " + type.getSimpleName() + " on " + source);
             }
 
             validators.add(new InListValidator(finalAllowableValues));

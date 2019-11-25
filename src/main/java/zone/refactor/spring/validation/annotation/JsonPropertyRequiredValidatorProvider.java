@@ -1,6 +1,8 @@
 package zone.refactor.spring.validation.annotation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import zone.refactor.spring.validation.validator.RequiredValidator;
@@ -15,12 +17,11 @@ import java.util.List;
  * field as a not-null requirement.
  */
 @Service
-public class JsonPropertyRequiredValidatorProvider implements ValidatorProvider {
+public class JsonPropertyRequiredValidatorProvider extends AnnotationValidatorProvider<JsonProperty> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        JsonProperty jsonProperty = parameter.getAnnotation(JsonProperty.class);
+    public List<Validator> provide(@Nullable final JsonProperty annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
-        if (jsonProperty != null && jsonProperty.required()) {
+        if (annotation != null && annotation.required()) {
             validators.add(new RequiredValidator());
         }
         return validators;

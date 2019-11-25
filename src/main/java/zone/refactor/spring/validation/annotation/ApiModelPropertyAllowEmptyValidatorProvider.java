@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.MinimumLengthValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
-import java.lang.reflect.Parameter;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +14,10 @@ import java.util.List;
  * MinimumLengthValidator with the value of 1.
  */
 @Service
-public class ApiModelPropertyAllowEmptyValidatorProvider implements ValidatorProvider {
-    @Override
-    public List<Validator> provide(Parameter parameter) {
-        ApiModelProperty apiModelProperty = parameter.getAnnotation(ApiModelProperty.class);
+public class ApiModelPropertyAllowEmptyValidatorProvider extends AnnotationValidatorProvider<ApiModelProperty> {
+    public List<Validator> provide(@Nullable final ApiModelProperty apiModelProperty, Class<?> type, String source) {
         List<Validator> validators = new ArrayList<>();
-        if (apiModelProperty != null && !apiModelProperty.allowEmptyValue() && parameter.getType().isAssignableFrom(String.class)) {
+        if (apiModelProperty != null && !apiModelProperty.allowEmptyValue() && type.isAssignableFrom(String.class)) {
             validators.add(new MinimumLengthValidator(1));
         }
         return validators;

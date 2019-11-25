@@ -1,5 +1,7 @@
 package zone.refactor.spring.validation.annotation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.MaximumLengthValidator;
 import zone.refactor.spring.validation.validator.MaximumValidator;
@@ -17,20 +19,19 @@ import java.util.Map;
  * is a string, the maximum length.
  */
 @Service
-public class MaxValidatorProvider implements ValidatorProvider {
+public class MaxValidatorProvider extends AnnotationValidatorProvider<Max> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        Max max = parameter.getAnnotation(Max.class);
+    public List<Validator> provide(@Nullable final Max annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
-        if (max != null) {
+        if (annotation != null) {
             if (
-                parameter.getType().isAssignableFrom(CharSequence.class) ||
-                parameter.getType().isAssignableFrom(Collection.class) ||
-                parameter.getType().isAssignableFrom(Map.class)
+                type.isAssignableFrom(CharSequence.class) ||
+                    type.isAssignableFrom(Collection.class) ||
+                    type.isAssignableFrom(Map.class)
             ) {
-                validators.add(new MaximumLengthValidator(max.value()));
+                validators.add(new MaximumLengthValidator(annotation.value()));
             } else {
-                validators.add(new MaximumValidator(max.value()));
+                validators.add(new MaximumValidator(annotation.value()));
             }
         }
         return validators;

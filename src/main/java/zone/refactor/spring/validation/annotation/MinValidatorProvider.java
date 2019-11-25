@@ -1,10 +1,12 @@
 package zone.refactor.spring.validation.annotation;
 
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.MinimumLengthValidator;
 import zone.refactor.spring.validation.validator.MinimumValidator;
 import zone.refactor.spring.validation.validator.Validator;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -17,21 +19,19 @@ import java.util.Map;
  * is a string, the minimum length.
  */
 @Service
-public class MinValidatorProvider implements ValidatorProvider {
+public class MinValidatorProvider extends AnnotationValidatorProvider<Min> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        Min min = parameter.getAnnotation(Min.class);
-
+    public List<Validator> provide(@Nullable final Min annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
-        if (min != null) {
+        if (annotation != null) {
             if (
-                parameter.getType().isAssignableFrom(CharSequence.class) ||
-                parameter.getType().isAssignableFrom(Collection.class) ||
-                parameter.getType().isAssignableFrom(Map.class)
+                type.isAssignableFrom(CharSequence.class) ||
+                type.isAssignableFrom(Collection.class) ||
+                type.isAssignableFrom(Map.class)
             ) {
-                validators.add(new MinimumLengthValidator(min.value()));
+                validators.add(new MinimumLengthValidator(annotation.value()));
             } else {
-                validators.add(new MinimumValidator(min.value()));
+                validators.add(new MinimumValidator(annotation.value()));
             }
         }
         return validators;

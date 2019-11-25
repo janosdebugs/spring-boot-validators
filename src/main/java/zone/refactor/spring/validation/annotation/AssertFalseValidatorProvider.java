@@ -1,5 +1,7 @@
 package zone.refactor.spring.validation.annotation;
 
+import io.swagger.annotations.ApiModelProperty;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import zone.refactor.spring.validation.validator.ExactValueValidator;
 import zone.refactor.spring.validation.validator.Validator;
@@ -14,10 +16,9 @@ import java.util.List;
  * is a string, the maximum length.
  */
 @Service
-public class AssertFalseValidatorProvider implements ValidatorProvider {
+public class AssertFalseValidatorProvider extends AnnotationValidatorProvider<AssertFalse> {
     @Override
-    public List<Validator> provide(Parameter parameter) {
-        AssertFalse annotation = parameter.getAnnotation(AssertFalse.class);
+    public List<Validator> provide(@Nullable final AssertFalse annotation, final Class<?> type, final String source) {
         List<Validator> validators = new ArrayList<>();
         if (annotation != null) {
             validators.add(new ExactValueValidator(false));

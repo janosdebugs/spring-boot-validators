@@ -19,4 +19,9 @@ public class RequiredValidator implements Validator {
         }
         return true;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof RequiredValidator;
+    }
 }

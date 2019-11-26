@@ -48,4 +48,9 @@ public class MinimumValidator implements Validator {
     public String getErrorKey() {
         return BuiltInError.MINIMUM.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof MinimumValidator && ((MinimumValidator) other).minimum == minimum;
+    }
 }

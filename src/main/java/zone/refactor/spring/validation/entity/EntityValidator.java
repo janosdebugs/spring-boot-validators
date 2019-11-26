@@ -57,7 +57,7 @@ public class EntityValidator<ENTITYTYPE, EXCEPTIONTYPE extends Exception> {
     }
 
     //TODO dedup this method
-    public Map<String, Collection<String>> validate(ENTITYTYPE entity) {
+    public Map<String, Set<String>> validate(ENTITYTYPE entity) {
         ValidatorChain<EXCEPTIONTYPE> validatorChain = new ValidatorChain<>(exceptionFactory);
         Map<String, Object> data = new HashMap<>();
         for (Field field : entity.getClass().getFields()) {

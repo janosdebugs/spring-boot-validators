@@ -27,4 +27,9 @@ public class InListValidator implements Validator {
         //noinspection SuspiciousMethodCalls
         return value == null || (value instanceof String && ((String) value).isEmpty()) || expected.contains(value);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof InListValidator && ((InListValidator) other).expected.equals(expected);
+    }
 }

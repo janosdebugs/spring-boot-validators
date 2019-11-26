@@ -59,4 +59,10 @@ public class MaximumValidator implements Validator {
     public String getErrorKey() {
         return BuiltInError.MAXIMUM.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof MaximumValidator && ((MaximumValidator) other).maximum == maximum;
+    }
+
 }

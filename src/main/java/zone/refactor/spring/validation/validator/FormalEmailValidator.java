@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 import java.util.regex.Pattern;
 
@@ -51,4 +50,8 @@ public class FormalEmailValidator implements EmailValidator {
         return localPartPattern.matcher(localPart).matches() && domainNameValidator.isValid(domain);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof FormalEmailValidator;
+    }
 }

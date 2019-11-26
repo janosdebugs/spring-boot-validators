@@ -1,7 +1,5 @@
 package zone.refactor.spring.validation.validator;
 
-import zone.refactor.spring.validation.localization.LocalizationService;
-
 import java.util.regex.Pattern;
 
 
@@ -18,5 +16,11 @@ public class UuidValidator extends PatternValidator {
     @Override
     public String getErrorKey() {
         return BuiltInError.UUID.toString();
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof UuidValidator;
     }
 }

@@ -19,4 +19,12 @@ public class ExactValueValidator implements Validator {
     public boolean isValid(@Nullable Object value) {
         return value == null || (value instanceof String && ((String) value).isEmpty()) || value.equals(expected);
     }
+
+    @Override
+    public boolean equals(@Nullable Object other) {
+        if (!(other instanceof ExactValueValidator)) {
+            return false;
+        }
+        return expected.equals(((ExactValueValidator) other).expected);
+    }
 }

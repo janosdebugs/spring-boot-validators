@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 public class SingleLineValidator implements Validator {
 
@@ -23,5 +22,11 @@ public class SingleLineValidator implements Validator {
         } else {
             return !value.toString().contains("\n");
         }
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof SingleLineValidator;
     }
 }

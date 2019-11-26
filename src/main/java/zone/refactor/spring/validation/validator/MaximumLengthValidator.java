@@ -35,4 +35,9 @@ public class MaximumLengthValidator implements Validator {
     public String getErrorKey() {
         return BuiltInError.MAXIMUM_LENGTH.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof MaximumLengthValidator && ((MaximumLengthValidator) other).maximumLength == maximumLength;
+    }
 }

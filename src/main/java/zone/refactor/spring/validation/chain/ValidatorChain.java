@@ -8,7 +8,7 @@ import java.util.*;
 
 
 public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
-    private final Map<String, Collection<Validator>> validators = new HashMap<>();
+    private final Map<String, Set<Validator>> validators = new HashMap<>();
     private final ExceptionFactory<EXCEPTION_TYPE> exceptionFactory;
     private List<ValidatorChainPlugin> plugins = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
 
     public synchronized void addValidator(String field, Validator validator) {
         if (!validators.containsKey(field)) {
-            validators.put(field, new ArrayList<>());
+            validators.put(field, new HashSet<>());
         }
         validators.get(field).add(validator);
     }
@@ -34,10 +34,10 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
         validators.forEach(validator -> addValidator(field, validator));
     }
 
-    public Map<String, Collection<String>> getErrors(Map<String, Object> data) {
-        Map<String, Collection<String>> errors = new HashMap<>();
+    public Map<String, Set<String>> getErrors(Map<String, Object> data) {
+        Map<String, Set<String>> errors = new HashMap<>();
 
-        for (Map.Entry<String, Collection<Validator>> validatorEntry : validators.entrySet()) {
+        for (Map.Entry<String, Set<Validator>> validatorEntry : validators.entrySet()) {
             Object value = null;
             String key = validatorEntry.getKey();
             if (data.containsKey(validatorEntry.getKey())) {
@@ -45,8 +45,8 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
             }
             for (Validator validator : validatorEntry.getValue()) {
                 if (!validator.isValid(value)) {
-                    Collection<String> errorList = errors
-                        .getOrDefault(key, new ArrayList<>());
+                    Set<String> errorList = errors
+                        .getOrDefault(key, new HashSet<>());
                     errorList.add(validator.getErrorKey());
                     errors.put(
                         key,
@@ -64,7 +64,7 @@ public class ValidatorChain<EXCEPTION_TYPE extends Exception> {
     }
 
     public void validate(Map<String, Object> data) throws EXCEPTION_TYPE {
-        Map<String, Collection<String>> errors = getErrors(data);
+        Map<String, Set<String>> errors = getErrors(data);
 
         if (!errors.isEmpty()) {
             exceptionFactory.create(errors);

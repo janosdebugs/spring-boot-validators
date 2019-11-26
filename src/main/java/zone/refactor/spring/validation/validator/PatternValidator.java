@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 import java.util.regex.Pattern;
 
@@ -29,5 +28,10 @@ public class PatternValidator implements Validator {
         } else {
             return value.toString().isEmpty() || pattern.matcher(value.toString()).matches();
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof PatternValidator && ((PatternValidator) other).pattern.equals(pattern);
     }
 }

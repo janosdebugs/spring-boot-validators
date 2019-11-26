@@ -37,4 +37,9 @@ public class IntegerValidator implements Validator {
             return false;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof IntegerValidator;
+    }
 }

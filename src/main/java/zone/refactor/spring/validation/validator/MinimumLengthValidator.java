@@ -36,4 +36,10 @@ public class MinimumLengthValidator implements Validator {
     public String getErrorKey() {
         return BuiltInError.MINIMUM_LENGTH.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof MinimumLengthValidator && ((MinimumLengthValidator) other).minimumLength == minimumLength;
+    }
+
 }

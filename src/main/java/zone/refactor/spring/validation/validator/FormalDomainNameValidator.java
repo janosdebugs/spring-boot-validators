@@ -1,7 +1,6 @@
 package zone.refactor.spring.validation.validator;
 
 import org.springframework.lang.Nullable;
-import zone.refactor.spring.validation.localization.LocalizationService;
 
 import java.net.IDN;
 import java.util.regex.Pattern;
@@ -51,5 +50,10 @@ public class FormalDomainNameValidator implements DomainNameValidator {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof FormalDomainNameValidator;
     }
 }

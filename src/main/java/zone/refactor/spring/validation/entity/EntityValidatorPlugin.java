@@ -2,10 +2,7 @@ package zone.refactor.spring.validation.entity;
 
 import zone.refactor.spring.validation.validator.ValidatorChainPlugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 public class EntityValidatorPlugin<ENTITYTYPE, EXCEPTIONTYPE extends Exception> implements ValidatorChainPlugin {
     private final String key;
@@ -26,7 +23,7 @@ public class EntityValidatorPlugin<ENTITYTYPE, EXCEPTIONTYPE extends Exception> 
     }
 
     @Override
-    public void process(final Map<String, Object> data, final Map<String, Collection<String>> errors) {
+    public void process(final Map<String, Object> data, final Map<String, Set<String>> errors) {
         final Object object = data.get(key);
 
         if (object == null) {
@@ -38,13 +35,13 @@ public class EntityValidatorPlugin<ENTITYTYPE, EXCEPTIONTYPE extends Exception> 
         }
 
         //noinspection unchecked
-        final Map<String, Collection<String>> validatorErrors = entityValidator.validate((ENTITYTYPE) object);
+        final Map<String, Set<String>> validatorErrors = entityValidator.validate((ENTITYTYPE) object);
 
         for (String key : validatorErrors.keySet()) {
-            final Collection<String> keyErrors = new ArrayList<>(errors
+            final Set<String> keyErrors = new HashSet<>(errors
                 .getOrDefault(
                     key,
-                    Collections.emptyList()
+                    Collections.emptySet()
                 ));
             keyErrors.addAll(
                 validatorErrors.get(key)

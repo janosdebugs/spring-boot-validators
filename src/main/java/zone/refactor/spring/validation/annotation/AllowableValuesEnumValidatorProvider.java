@@ -41,7 +41,7 @@ abstract class AllowableValuesEnumValidatorProvider<T extends Annotation> extend
                     }
                 ).collect(Collectors.toList());
             } else if (String.class.isAssignableFrom(type)) {
-                finalAllowableValues = Arrays.asList(allowableValues.split(",", -1));
+                finalAllowableValues = Arrays.asList((Object[])allowableValues.split(",", -1));
             } else if (BigInteger.class.isAssignableFrom(type)) {
                 finalAllowableValues = allowableValuesList.stream().map(
                     value -> {

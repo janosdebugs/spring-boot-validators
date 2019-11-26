@@ -1,6 +1,5 @@
 package zone.refactor.spring.validation.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
@@ -13,7 +12,7 @@ import java.util.Collection;
 @Configuration
 public class RefactorZoneValidationAutoConfiguration {
     @Bean
-    @ConditionalOnMissingBean(ValidatorProvider.class)
+    @RequestScope
     public Collection<ValidatorProvider> create() {
         return Arrays.asList(
             new ApiModelPropertyAllowEmptyValidatorProvider(),
@@ -41,7 +40,6 @@ public class RefactorZoneValidationAutoConfiguration {
 
 
     @Bean
-    @ConditionalOnMissingBean(ValidationAspect.class)
     @RequestScope
     public <T extends Exception> ValidationAspect<T> createAspect(
         Collection<ValidatorProvider> validatorProviders,

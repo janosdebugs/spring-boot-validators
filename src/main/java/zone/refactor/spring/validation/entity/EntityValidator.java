@@ -102,7 +102,7 @@ public class EntityValidator<ENTITYTYPE, EXCEPTIONTYPE extends Exception> {
                         (pathVariable != null && pathVariable.required()) ||
                         notNull != null
                     ) {
-                        if (!primitiveTypes.contains(field.getType())) {
+                        if (!primitiveTypes.contains(field.getType()) && !field.getType().isEnum()) {
                             //Subobject validation
                             validatorChain.addPlugin(
                                 new EntityValidatorPlugin<>(
@@ -164,7 +164,7 @@ public class EntityValidator<ENTITYTYPE, EXCEPTIONTYPE extends Exception> {
                         (pathVariable != null && pathVariable.required()) ||
                         notNull != null
                     ) {
-                        if (!primitiveTypes.contains(method.getReturnType())) {
+                        if (!primitiveTypes.contains(method.getReturnType()) && !method.getReturnType().isEnum()) {
                             //Subobject validation
                             validatorChain.addPlugin(
                                 new EntityValidatorPlugin<>(

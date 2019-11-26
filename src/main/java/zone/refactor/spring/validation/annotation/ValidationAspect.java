@@ -116,7 +116,7 @@ public class ValidationAspect<T extends Exception> {
                 (requestParam != null && requestParam.required()) ||
                 notNull != null
             ) {
-                if (!primitiveTypes.contains(parameter.getType())) {
+                if (!primitiveTypes.contains(parameter.getType()) && !parameter.getType().isEnum()) {
                     //Subobject validation
                     chain.addPlugin(
                         new EntityValidatorPlugin<>(

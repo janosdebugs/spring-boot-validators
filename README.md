@@ -59,6 +59,7 @@ However, in order to use the automatic validation, you will need to provide a fa
 ```java
 import zone.refactor.spring.validation.chain.ExceptionFactory;
 
+@Service
 class ValidationExceptionFactory extends ExceptionFactory<MyValidationException> {
     @Override
     void create(Map<String, Collection<String>> errors) throws MyValidationException {
@@ -67,7 +68,7 @@ class ValidationExceptionFactory extends ExceptionFactory<MyValidationException>
 }
 ```
 
-The `errors` parameter will contain a key-value set where the keys are the request field names and the value is a c
+The `errors` parameter will contain a key-value set where the keys are the request field names and the value is a 
 collection of errors.
 
 Once you have set this up you can add annotations to your controllers. For examples see [the test controller](https://github.com/refactorzone/spring-boot-validators/blob/master/src/test/java/zone/refactor/spring/validation/annotation/TestController.java).
